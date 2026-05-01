@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rutvik Kshirsagar</title>
+<link rel="icon" type="image/png" href="Nexus_Logo.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0e0e0e;
+    --bg2: #161616;
+    --bg3: #1c1c1c;
+    --border: #2a2a2a;
+    --text: #ededed;
+    --muted: #666;
+    --muted2: #999;
+    --accent: #ff5d2e;
+    --green: #3ecf6b;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    background: rgba(14,14,14,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted2);
+  }
+
+  .nav-dot {
+    width: 8px; height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(62,207,107,0.4); }
+    50% { box-shadow: 0 0 0 5px rgba(62,207,107,0); }
+  }
+
+  .nav-name { color: var(--text); font-weight: 500; }
+  .nav-sep { color: var(--border); }
+
+  .nav-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-meta-sep { color: var(--border); }
+
+  .nav-meta-key { color: var(--muted); margin-right: 4px; }
+
+  .nav-meta-val {
+    color: var(--muted2);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .nav-status-dot {
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    color: var(--muted);
+  }
+
+  #nav-clock { color: var(--muted2); letter-spacing: 0.05em; }
+
+  .nav-version { color: var(--muted); }
+
+  .nav-links { display: flex; gap: 20px; }
+
+  .nav-links a {
+    color: var(--muted2);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  .hero h1 .accent { color: var(--accent); }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--muted2);
+    max-width: 620px;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.25s;
+  }
+
+  .hero-tagline {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.35s;
+  }
+
+  /* ── FILE TABLE ── */
+  .file-table {
+    border-top: 1px solid var(--border);
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.45s;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .file-key {
+    width: 120px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  .file-val {
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  .commit-hash { color: var(--accent); }
+
+  /* ── STATS GRID ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--border);
+    margin-bottom: 100px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.55s;
+  }
+
+  .stat-cell {
+    padding: 28px 32px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .stat-cell:hover { background: var(--bg2); }
+  .stat-cell:nth-child(3n) { border-right: none; }
+  .stat-cell:nth-child(4), .stat-cell:nth-child(5), .stat-cell:nth-child(6) { border-bottom: none; }
+
+  .stat-num {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    margin-bottom: 36px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-num { color: var(--accent); font-weight: 600; }
+  .section-slash { color: var(--muted); }
+  .section-name { color: var(--muted2); }
+
+  .section-meta { color: var(--muted); }
+
+  /* ── PROJECTS ── */
+  #projects { margin-bottom: 100px; }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 28px;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+
+  .project-card:hover {
+    border-color: #444;
+    background: var(--bg3);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .card-badge {
+    display: inline-block;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+  }
+
+  .card-num {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .project-card h3 {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--muted2);
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+
+  .project-bullets {
+    list-style: none;
+    margin-bottom: 20px;
+  }
+
+  .project-bullets li {
+    font-size: 12px;
+    color: var(--muted2);
+    padding: 3px 0;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .project-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .tag {
+    background: #1e1e1e;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 11px;
+    padding: 4px 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .demo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 10px 18px;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .demo-btn:hover {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* ── EXPERIENCE ── */
+  #experience { margin-bottom: 100px; }
+
+  .exp-entry {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 48px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exp-entry:first-of-type { border-top: 1px solid var(--border); }
+
+  .exp-date { color: var(--muted2); font-size: 12px; line-height: 1.8; }
+  .exp-location { color: var(--muted); font-size: 12px; }
+
+  .exp-right h3 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .exp-title {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .exp-title .role { color: var(--accent); }
+  .exp-title .promoted { color: var(--muted); }
+
+  .exp-bullets {
+    list-style: none;
+  }
+
+  .exp-bullets li {
+    font-size: 12px;
+    color: var(--muted2);
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .contact-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .contact-headline {
+    font-family: var(--mono);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .contact-headline .accent { color: var(--accent); }
+
+  .contact-sub {
+    font-size: 13px;
+    color: var(--muted2);
+    margin-bottom: 40px;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    padding: 12px 24px;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .contact-link.primary {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .contact-link.primary:hover {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-dot"></div>
+    <span class="nav-name">RK</span>
+    <span class="nav-sep">·</span>
+    <span>software engineer</span>
+  </div>
+  <div class="nav-meta">
+    <span><span class="nav-meta-key">FILE</span><span class="nav-meta-val">Rutvik.Kshirsagar</span></span>
+    <span class="nav-meta-sep">·</span>
+    <span><span class="nav-meta-key">STATUS</span><span class="nav-meta-val">shipping<span class="nav-status-dot"></span></span></span>
+    <span class="nav-meta-sep">·</span>
+    <span><span class="nav-meta-key">LOCATED</span><span class="nav-meta-val">Ithaca, NY</span></span>
+    <span class="nav-meta-sep">·</span>
+    <span><span class="nav-meta-key">LAST COMMIT</span><span class="nav-meta-val" id="commit-time">2 hours ago</span></span>
+  </div>
+  <div class="nav-right">
+    <span id="nav-clock"></span>
+    <span class="nav-version">v3.2.0</span>
+    <div class="nav-links">
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>I build at <span class="accent"><span class="accent">scale </span></span> &<br>and make systems <span class="accent">faster.</span></h1>
+    <p class="hero-sub">Software engineer who treats milliseconds like they matter. I write code that moves petabytes for 90% of fortune 500 companies, systems that scale, and researches that revolutionize.</p>
+    <p class="hero-tagline">Master in CS @ Cornell &nbsp;·&nbsp; ex-Veritas &nbsp;·&nbsp; 8 Hackathons &nbsp;·&nbsp; 2 Research Papers &nbsp;·&nbsp; Patent &nbsp;·&nbsp; Currently looking for full time Software Engineer roles across US</p>
+
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-num">32%</div>
+        <div class="stat-label">Perf gain on metadata I/O</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">$34M</div>
+        <div class="stat-label">Upsell bookings unblocked</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">90%</div>
+        <div class="stat-label">of Fortune 500 use VxFS</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">8×</div>
+        <div class="stat-label">Hackathon winner</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">1</div>
+        <div class="stat-label"> Patent published</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">2.5y</div>
+        <div class="stat-label">Shipping production code</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="section-num">01</span>
+        <span class="section-slash">//</span>
+        <span class="section-name">WORK_HISTORY</span>
+      </div>
+      <span class="section-meta">2.5 YRS</span>
+    </div>
+
+    <div class="exp-entry">
+      <div>
+        <div class="exp-date">Jul 2022 — Dec 2024</div>
+        <div class="exp-location">Pune, India</div>
+      </div>
+      <div class="exp-right">
+        <h3>Veritas Technologies</h3>
+        <div class="exp-title">
+          <span class="role">Software Engineer</span>
+          <span class="promoted"> (Promoted from Associate SWE)</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Engineered features and perf optimizations for Veritas File System (VxFS), used by 90% of Fortune 500 for data resiliency and HA.</li>
+          <li>Designed async I/O APIs in C++ on Linux to parallelize petabytes of metadata collection — read/write +32%, cut Metasave runtime.</li>
+          <li>Built an observability platform on Node.js + OpenSearch + Logstash, unifying multi-node VxFS cluster logs. Cut support investigation time 25%.</li>
+          <li>Shipped REST APIs and Angular UI across three product releases; closed GA gaps that contributed to $34M in upsell bookings.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-entry">
+      <div>
+        <div class="exp-date">Feb 2022 — Jun 2022</div>
+        <div class="exp-location">Pune, India</div>
+      </div>
+      <div class="exp-right">
+        <h3>Veritas Technologies</h3>
+        <div class="exp-title">
+          <span class="role">SWE Intern</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Built a log-driven anomaly detection tool in Python + Postgres for early RCA — reduced time-to-resolution by 35%.</li>
+          <li>Diagnosed and resolved 27 file-system issues across storage, locking, cluster, and network layers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="section-num">02</span>
+        <span class="section-slash">//</span>
+        <span class="section-name">SELECTED_PROJECTS</span>
+      </div>
+      <span class="section-meta">2 ENTRIES</span>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="card-top">
+          <span class="card-badge">PATENTED</span>
+          <span class="card-num">01 / 02</span>
+        </div>
+        <h3>Universal Gesture Controller Smart Watch</h3>
+        <p class="project-desc">A wristwatch that controls every device around it with a flick. Patent-published.</p>
+        <ul class="project-bullets">
+          <li>Smart gesture controller — control all nearby devices with hand motion.</li>
+          <li>Event-driven Node.js backend, REST + MQTT for real-time comms.</li>
+          <li>MongoDB Atlas for high-throughput event storage.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Node.js</span>
+          <span class="tag">MQTT</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">Embedded C</span>
+        </div>
+        <a class="demo-btn" href="https://drive.google.com/file/d/1ToP2AVXEcaRsvsf3GBVBBstZDxSbJT-W/view">▶ WATCH DEMO →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="card-top">
+          <span class="card-badge">DISTRIBUTED</span>
+          <span class="card-num">02 / 02</span>
+        </div>
+        <h3>DeNode Network</h3>
+        <p class="project-desc">Self-healing mesh network for smart extension boxes. No internet required.</p>
+        <ul class="project-bullets">
+          <li>Heartbeat-based discovery + multi-threaded TCP sockets, no internet dependency.</li>
+          <li>Device state replication for fault-tolerant edge networks.</li>
+          <li>Flutter mobile app as control plane, with voice command support.</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag"><Data></Data>Distributed Systems</span>
+          <span class="tag">Flutter</span>
+          <span class="tag">TCP</span>
+          <span class="tag">Multi-threading</span>
+          <span class="tag">Voice</span>
+        </div>
+        <a class="demo-btn" href=https://www.linkedin.com/posts/rutvikshirsagar_ironman-internet-security-ugcPost-6887630211190521857-dWeK?utm_source=share&utm_medium=member_desktop&rcm=ACoAACy0qZIBfZi3yfvxDB64T_VWvby5t5oiaOg"">▶ WATCH DEMO →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="contact-label">// OPEN TO OPPORTUNITIES</p>
+    <h2 class="contact-headline">Let's build something <span class="accent">fast.</span></h2>
+    <p class="contact-sub">SWE roles in systems, backend, or infra. Reach out.</p>
+    <div class="contact-links">
+      <a class="contact-link primary" href="rk828@cornell.edu">✉ EMAIL ME</a>
+      <a class="contact-link" href="https://linkedin.com/in/rutvikshirsagar" target="_blank">LinkedIn</a>
+      <a class="contact-link" href="https://github.com/Elixer3000" target="_blank">GitHub</a>
+      <a class="contact-link" href="#">Resume PDF</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>rutvik.kshirsagar &nbsp;·&nbsp; v3.2.0</span>
+  <span id="footer-time"></span>
+</footer>
+
+<script>
+  // Live clock
+  function updateClock() {
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    const h = pad(now.getHours());
+    const m = pad(now.getMinutes());
+    const s = pad(now.getSeconds());
+    const tz = 'EST';
+    const str = `${h}:${m}:${s} ${tz}`;
+    const el = document.getElementById('nav-clock');
+    const ft = document.getElementById('footer-time');
+    if (el) el.textContent = str;
+    if (ft) ft.textContent = str;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
